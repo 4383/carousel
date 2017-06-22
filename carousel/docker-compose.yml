@@ -1,0 +1,40 @@
+version: '2'
+services:
+    server:
+        build:
+            context: server/
+        hostname: dnmap-server
+        ports:
+            - "46001:46001"
+        volumes:
+            - /tmp/dnmap:/dnmap_v0.6/nmap_results
+
+    client1:
+        build:
+            context: client/
+        environment:
+            - NAME="minion1"
+        depends_on:
+            - "server"
+        links:
+            - "server:dnmap-server"
+
+    client2:
+        build:
+            context: client/
+        environment:
+            - NAME="minion2"
+        depends_on:
+            - "server"
+        links:
+            - "server:dnmap-server"
+
+    client3:
+        build:
+            context: client/
+        environment:
+            - NAME="minion3"
+        depends_on:
+            - "server"
+        links:
+            - "server:dnmap-server"
